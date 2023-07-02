@@ -2,7 +2,7 @@ import curses
 from ant import ant_init, ant_update
 from game_of_life import gol_init, gol_update
 from sort import sort_init, sort_update
-from funcs import draw_str
+from funcs import draw_str, cycle
 from time import time
 
 
@@ -11,8 +11,8 @@ def main(stdscr):
     # Setup
     start = time()
     title_start = time()
-    curses.curs_set(0)  # hide the cursor
-    curses.use_default_colors()  # fix icky background issue
+    curses.curs_set(0)  # hide cursor
+    curses.use_default_colors()
     stdscr.nodelay(1)  # non-blocking input
     rate = 50
     stdscr.timeout(rate)  # refresh rate in milliseconds
@@ -40,12 +40,10 @@ def main(stdscr):
     while True:
 
         # change mode if time interval has passed
-        if time() - start >= 30 * 10:
-            mode += 1
-            if mode >= len(modes):
-                mode = 0
-            data = init[modes[mode]](maxx, maxy)
-            start, title_start = time(), time()
+        # if time() - start >= 30 * 10:
+        #     mode = cycle(mode, len(modes) - 1)
+        #     data = init[modes[mode]](maxx, maxy)
+        #     start, title_start = time(), time()
 
         # User input
         key = stdscr.getch()
@@ -58,9 +56,7 @@ def main(stdscr):
             rate -= 10
             stdscr.timeout(rate)
         elif key == ord('n'):
-            mode += 1
-            if mode >= len(modes):
-                mode = 0
+            mode = cycle(mode, len(modes) - 1)
             data = init[modes[mode]](maxx, maxy)
             start, title_start = time(), time()
 

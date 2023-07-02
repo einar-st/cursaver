@@ -3,6 +3,9 @@ import random
 from funcs import draw_ch, i2y, i2x, xy2i, cycle
 from time import time
 
+# Todo:
+# - Indicators on bottom
+
 
 def sel_sort(nums):
 
@@ -22,8 +25,7 @@ def sel_sort(nums):
 
     start = time()
     while time() - start < 2:
-        vars = {}
-        yield (nums, vars)
+        yield nums, {}
 
 
 def bubble_sort(nums):
@@ -43,8 +45,64 @@ def bubble_sort(nums):
 
     start = time()
     while time() - start < 2:
-        vars = {}
-        yield (nums, vars)
+        yield nums, {}
+
+
+def insert_sort(nums):
+
+    for x in range(1, len(nums)):
+        for i in range(x, -1, -1):
+            vars = {i: 2, x: 3}
+            yield nums, vars
+            if i == 0 or nums[i] > nums[i-1]:
+                break
+            else:
+                nums[i], nums[i-1] = nums[i-1], nums[i]
+
+    start = time()
+    while time() - start < 2:
+        yield nums, {}
+
+
+def quick_sort(nums, top=True, *args):
+
+    try:
+        lo, hi = args[0]
+    except IndexError:
+        lo = 0
+        hi = len(nums) - 1
+
+    if lo >= hi:
+        return
+
+    j = lo - 1
+    p = hi
+
+    # middle of three
+    mot = [nums[lo], nums[int(len(nums) / 2)], nums[hi]]
+    mot.remove(min(mot))
+    mot.remove(max(mot))
+    for i in (lo, int(len(nums) / 2)):
+        if nums[i] == mot[0]:
+            nums[i], nums[p] = nums[p], nums[i]
+            break
+
+    for i in range(lo, hi):
+        if nums[i] < nums[p]:
+            j += 1
+            nums[i], nums[j] = nums[j], nums[i]
+        yield nums, {lo: 2, i: 3, j: 3, p: 1}
+
+    nums[p], nums[j+1] = nums[j+1], nums[p]
+
+    for res in quick_sort(nums, False, (lo, j)):
+        yield res
+
+    for res in quick_sort(nums, False, (j + 2, hi)):
+        yield res
+
+    if top:
+        yield nums, {}
 
 
 def sort_init(maxx, maxy):
@@ -59,7 +117,7 @@ def sort_init(maxx, maxy):
     data['maxy'] = maxy
     data['ant'] = xy2i(int(maxx/2), int(maxy/2), maxx)
     data['direction'] = 0
-    data['algs'] = [sel_sort, bubble_sort]
+    data['algs'] = [quick_sort, sel_sort, bubble_sort, insert_sort]
     data['alg'] = 0
 
     nums = []
@@ -75,16 +133,18 @@ def sort_update(data, stdscr):
 
     maxx = data['maxx']
     maxy = data['maxy']
+    alg = data['alg']
+    algs = data['algs']
 
     try:
         nums, vars = next(data['nums'])
     except StopIteration:
         nums = []
         vars = {}
-        data['alg'] = cycle(data['alg'], len(data['algs']) - 1)
+        data['alg'] = cycle(alg, len(algs) - 1)
         for i in range(maxx):
             nums.append(random.randrange(1, maxy))
-        data['nums'] = data['algs'][data['alg']](nums)
+        data['nums'] = algs[alg](nums)
 
     for pos in range(1, maxx * maxy):
         x = i2x(pos, maxx)
