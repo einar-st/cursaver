@@ -5,9 +5,10 @@ from funcs import draw_ch, wrap, i2y, i2x, xy2i
 def ant_init(maxx, maxy):
 
     data = {}
-    data['maxx'] = maxx
     data['title'] = 'Langton\'s Ant'
+    data['maxx'] = maxx
     data['maxy'] = maxy
+    data['rate'] = 60
     data['ant'] = xy2i(int(maxx/2), int(maxy/2), maxx)
     data['cells'] = []
     data['direction'] = 0

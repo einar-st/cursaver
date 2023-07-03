@@ -1,6 +1,6 @@
 import curses
 import random
-from funcs import draw_ch, i2y, i2x, xy2i, cycle
+from funcs import draw_ch, draw_str, i2y, i2x, xy2i, cycle
 from time import time
 
 # Todo:
@@ -115,10 +115,16 @@ def sort_init(maxx, maxy):
     data['title'] = 'Sorting algorithms'
     data['maxx'] = maxx
     data['maxy'] = maxy
-    data['ant'] = xy2i(int(maxx/2), int(maxy/2), maxx)
-    data['direction'] = 0
-    data['algs'] = [quick_sort, sel_sort, bubble_sort, insert_sort]
+    data['rate'] = 20
+    data['algs'] = (sel_sort, bubble_sort, insert_sort, quick_sort)
+    data['alg_names'] = (
+        'Selection sort',
+        'Bubble sort',
+        'Insert sort',
+        'Quick sort'
+    )
     data['alg'] = 0
+    data['start_alg'] = time()
 
     nums = []
     for i in range(maxx):
@@ -135,6 +141,7 @@ def sort_update(data, stdscr):
     maxy = data['maxy']
     alg = data['alg']
     algs = data['algs']
+    alg_names = data['alg_names']
 
     try:
         nums, vars = next(data['nums'])
@@ -144,7 +151,8 @@ def sort_update(data, stdscr):
         data['alg'] = cycle(alg, len(algs) - 1)
         for i in range(maxx):
             nums.append(random.randrange(1, maxy))
-        data['nums'] = algs[alg](nums)
+        data['nums'] = algs[data['alg']](nums)
+        data['start_alg'] = time()
 
     for pos in range(1, maxx * maxy):
         x = i2x(pos, maxx)
@@ -154,3 +162,6 @@ def sort_update(data, stdscr):
                 draw_ch('|', y, x, stdscr, vars[x])
             else:
                 draw_ch('#', y, x, stdscr)
+
+    if time() - data['start_alg'] < 2:
+        draw_str(alg_names[alg], 2, 1, stdscr)

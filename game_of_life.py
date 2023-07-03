@@ -34,6 +34,7 @@ def gol_init(maxx, maxy):
     data['title'] = 'Game of Life'
     data['maxx'] = maxx
     data['maxy'] = maxy
+    data['rate'] = 60
 
     curses.init_pair(1, curses.COLOR_GREEN, -1)
     curses.init_pair(2, curses.COLOR_RED, -1)
