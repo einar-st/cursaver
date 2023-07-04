@@ -14,8 +14,6 @@ def main(stdscr):
     curses.curs_set(0)  # hide cursor
     curses.use_default_colors()
     stdscr.nodelay(1)  # non-blocking input
-    # rate = 50
-    # stdscr.timeout(rate)  # refresh rate in milliseconds
     cycle_savers = False
     cycle_duration = 45  # duration in minutes
     maxy, maxx = stdscr.getmaxyx()
@@ -47,23 +45,25 @@ def main(stdscr):
         if cycle_savers and (time() - start >= cycle_duration * 60):
             mode = cycle(mode, len(modes) - 1)
             data = init[modes[mode]](maxx, maxy)
-            rate = data['rate']
             start, title_start = time(), time()
 
         # User input
         key = stdscr.getch()
         if key == ord('q'):
             break  # Exit the loop if 'q' is pressed
-        elif key == 259:  # 10
-            rate += 10
-            stdscr.timeout(rate)
-        elif key == 258:  # -10
-            rate -= 10
-            stdscr.timeout(rate)
+        elif key == 259:
+            data['rate'] += 5
+            stdscr.timeout(data['rate'])
+            title_start = time()
+        elif key == 258:
+            data['rate'] -= 5
+            data['rate'] = max(5, data['rate'] - 5)
+            stdscr.timeout(data['rate'])
+            title_start = time()
         elif key == ord('n'):
             mode = cycle(mode, len(modes) - 1)
             data = init[modes[mode]](maxx, maxy)
-            rate = data['rate']
+            stdscr.timeout(data['rate'])
             start, title_start = time(), time()
 
         stdscr.erase()
@@ -72,7 +72,7 @@ def main(stdscr):
         update[modes[mode]](data, stdscr)
         if time() - title_start < 2:
             draw_str(data['title'], 1, 1, stdscr)
-            draw_str(str(data['rate']), 3, 1, stdscr)
+            draw_str(f'Frame duration: {data["rate"]}', 3, 1, stdscr)
 
         stdscr.refresh()
 
