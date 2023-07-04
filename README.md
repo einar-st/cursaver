@@ -10,7 +10,7 @@ A collection of terminal screensavers written in Python using the curses library
 ## Included screensaver modes
 
 ### Langton's Ant:
-Simple rules, lead to complex emergent behavior. The ant has four possible directions; up, down, left and right. If the ant is on a white square (no character) it changes direction to the right and advances. If it is on a black square (marked with '#') it changes direction to the left and advances. As the ant advances, the square left behind changes color.
+Simple rules lead to complex emergent behavior. The ant has four possible directions; up, down, left and right. If the ant is on a white square (no character) it changes direction to the right and advances. If it is on a black square (marked with '#') it changes direction to the left and advances. As the ant advances, the square left behind changes color.
 
 ### John Conway's Game of Life
 This cellular automaton simulates the evolution of a grid of cells.
