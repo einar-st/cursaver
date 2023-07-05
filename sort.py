@@ -1,6 +1,6 @@
 import curses
 import random
-from funcs import draw_ch, draw_str, i2y, i2x, xy2i, cycle
+from funcs import draw_ch, draw_str, i2y, i2x, cycle
 from time import time
 
 # Todo:
@@ -8,11 +8,6 @@ from time import time
 
 
 def sel_sort(nums):
-
-    # start = time()
-    # while time() - start < 2:
-    #     vars = {}
-    #     yield (nums, vars)
 
     for i in range(len(nums) - 1):
         low = i
@@ -29,11 +24,6 @@ def sel_sort(nums):
 
 
 def bubble_sort(nums):
-
-    # start = time()
-    # while time() - start < 2:
-    #     vars = {}
-    #     yield (nums, vars)
 
     for i in range(len(nums) - 1):
         for x in range(len(nums) - 1 - i):
@@ -125,6 +115,7 @@ def sort_init(maxx, maxy):
     )
     data['alg'] = 0
     data['start_alg'] = time()
+    data['change_mode'] = False
 
     nums = []
     for i in range(maxx):
@@ -146,6 +137,9 @@ def sort_update(data, stdscr):
     try:
         nums, vars = next(data['nums'])
     except StopIteration:
+        data['change_mode'] = True
+
+    if data['change_mode']:
         nums = []
         vars = {}
         data['alg'] = cycle(alg, len(algs) - 1)
@@ -153,6 +147,7 @@ def sort_update(data, stdscr):
             nums.append(random.randrange(1, maxy))
         data['nums'] = algs[data['alg']](nums)
         data['start_alg'] = time()
+        data['change_mode'] = False
 
     for pos in range(1, maxx * maxy):
         x = i2x(pos, maxx)

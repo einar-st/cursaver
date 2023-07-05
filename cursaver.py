@@ -35,7 +35,6 @@ def main(stdscr):
     frame_count = 0
 
     data = init[modes[mode]](maxx, maxy)
-    rate = data['rate']
     stdscr.timeout(data['rate'])
 
     # Main loop
@@ -65,6 +64,11 @@ def main(stdscr):
             data = init[modes[mode]](maxx, maxy)
             stdscr.timeout(data['rate'])
             start, title_start = time(), time()
+        elif key == ord('m'):
+            try:
+                data['change_mode'] = True
+            except KeyError:
+                pass
 
         stdscr.erase()
 

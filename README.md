@@ -3,7 +3,8 @@ A collection of terminal screensavers written in Python using the curses library
 
 ## Keyboard commands
 - q: Quit
-- n: Next screensaver mode
+- n: Next screensaver
+- m: Change mode specific to current screensaver
 - up arrow: Increase frame duration
 - down arrow: Decrease frame duration
 
