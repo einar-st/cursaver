@@ -102,7 +102,7 @@ def gol_update(data, stdscr):
     ch = '#'
 
     # repopulate if in closed loop
-    if data['lmode'] != 0:
+    if data['lmode'] == 0:
         if data['snap_cnt'] == 15:  # snapshot every 15th iteration
             data['snaps'][data['snap_idx']] = data['cells'].copy()
             data['snap_idx'] = cycle(data['snap_idx'], 1)
