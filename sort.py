@@ -130,7 +130,6 @@ def sort_update(data, stdscr):
 
     maxx = data['maxx']
     maxy = data['maxy']
-    alg = data['alg']
     algs = data['algs']
     alg_names = data['alg_names']
 
@@ -142,7 +141,7 @@ def sort_update(data, stdscr):
     if data['change_mode']:
         nums = []
         vars = {}
-        data['alg'] = cycle(alg, len(algs) - 1)
+        data['alg'] = cycle(data['alg'], len(algs) - 1)
         for i in range(maxx):
             nums.append(random.randrange(1, maxy))
         data['nums'] = algs[data['alg']](nums)
@@ -154,9 +153,9 @@ def sort_update(data, stdscr):
         y = i2y(pos, maxx)
         if nums[x] >= maxy - y:
             if x in vars.keys():
-                draw_ch('|', y, x, stdscr, vars[x])
+                draw_ch('I', y, x, stdscr, vars[x])
             else:
                 draw_ch('#', y, x, stdscr)
 
     if time() - data['start_alg'] < 2:
-        draw_str(alg_names[alg], 2, 1, stdscr)
+        draw_str(alg_names[data['alg']], 2, 1, stdscr)

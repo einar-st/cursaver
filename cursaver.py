@@ -55,7 +55,6 @@ def main(stdscr):
             stdscr.timeout(data['rate'])
             title_start = time()
         elif key == 258:
-            data['rate'] -= 5
             data['rate'] = max(5, data['rate'] - 5)
             stdscr.timeout(data['rate'])
             title_start = time()

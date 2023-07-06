@@ -45,7 +45,7 @@ def gol_init(maxx, maxy):
     data['title'] = 'Game of Life'
     data['maxx'] = maxx
     data['maxy'] = maxy
-    data['rate'] = 100
+    data['rate'] = 50
 
     data['snaps'] = [[], []]
     data['snap_idx'] = 0
