@@ -98,8 +98,6 @@ def gol_update(data, stdscr):
     maxx = data['maxx']
     maxy = data['maxy']
     flip_queue = []
-    # ch = '\uf111'
-    ch = '#'
 
     # repopulate if in closed loop
     if data['lmode'] == 0:
@@ -138,19 +136,19 @@ def gol_update(data, stdscr):
 
         if cells[cell] >= 1 and (count == 2 or count == 3):
             if cells[cell] == 1:
-                draw_ch(ch, y, x, stdscr, 1)
+                draw_ch('#', y, x, stdscr, 1)
                 cells[cell] += 1
             else:
-                draw_ch(ch, y, x, stdscr)
+                draw_ch('#', y, x, stdscr)
         elif (
             (cells[cell] >= 1 and (count < 2 or count > 3))
             or (cells[cell] == 0 and count == 3)
         ):
             flip_queue.append(cell)
             if cells[cell] > 1:
-                draw_ch(ch, y, x, stdscr, 2)
+                draw_ch('#', y, x, stdscr, 2)
             elif cells[cell] == 1:
-                draw_ch(ch, y, x, stdscr, 1)
+                draw_ch('#', y, x, stdscr, 1)
 
     # flip cells
     for cell in flip_queue:
